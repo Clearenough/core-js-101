@@ -546,8 +546,16 @@ function getIntervalArray(start, end) {
  *   [ 'a', 'a', 'a', 'a' ]  => [ 'a' ]
  *   [ 1, 1, 2, 2, 3, 3, 4, 4] => [ 1, 2, 3, 4]
  */
-function distinct(/* arr */) {
-  throw new Error('Not implemented');
+function distinct(arr) {
+  const unique = [];
+  const newArr = arr.filter((a) => {
+    if (!unique.includes(a)) {
+      unique.push(a);
+      return true;
+    }
+    return false;
+  });
+  return newArr;
 }
 
 /**
@@ -598,8 +606,10 @@ function group(/* array, keySelector, valueSelector */) {
  *   [[1, 2], [3, 4], [5, 6]], (x) => x     =>   [ 1, 2, 3, 4, 5, 6 ]
  *   ['one','two','three'], x=>x.split('')  =>   ['o','n','e','t','w','o','t','h','r','e','e']
  */
-function selectMany(/* arr, childrenSelector */) {
-  throw new Error('Not implemented');
+function selectMany(arr, childrenSelector) {
+  const flat = arr.flat();
+  const newArr = childrenSelector(flat);
+  return newArr.join();
 }
 
 
