@@ -285,8 +285,14 @@ function getSecondItems(arr) {
  *  [ 'a', 'b', 'c', null ] => [ 'a', 'b','b', 'c','c','c',  null,null,null,null ]
  *  [ 1,2,3,4,5 ] => [ 1, 2,2, 3,3,3, 4,4,4,4, 5,5,5,5,5 ]
  */
-function propagateItemsByPositionIndex(/* arr */) {
-  throw new Error('Not implemented');
+function propagateItemsByPositionIndex(arr) {
+  const transform = arr.reduce((prev, current, i) => (
+    prev.concat(Array.from(
+      { length: i + 1 },
+      () => current,
+    ))
+  ), []);
+  return transform;
 }
 
 
@@ -547,15 +553,15 @@ function getIntervalArray(start, end) {
  *   [ 1, 1, 2, 2, 3, 3, 4, 4] => [ 1, 2, 3, 4]
  */
 function distinct(arr) {
-  const unique = [];
-  const newArr = arr.filter((a) => {
-    if (!unique.includes(a)) {
-      unique.push(a);
+  const uniqueArr = [];
+  const filtered = arr.filter((a) => {
+    if (!uniqueArr.includes(a)) {
+      uniqueArr.push(a);
       return true;
     }
     return false;
   });
-  return newArr;
+  return filtered;
 }
 
 /**
@@ -607,9 +613,8 @@ function group(/* array, keySelector, valueSelector */) {
  *   ['one','two','three'], x=>x.split('')  =>   ['o','n','e','t','w','o','t','h','r','e','e']
  */
 function selectMany(arr, childrenSelector) {
-  const flat = arr.flat();
-  const newArr = childrenSelector(flat);
-  return newArr.join();
+  const newArr = arr.map((a) => childrenSelector(a));
+  return newArr.flat();
 }
 
 
@@ -625,8 +630,9 @@ function selectMany(arr, childrenSelector) {
  *   ['one','two','three'], [2]       => 'three'  (arr[2])
  *   [[[ 1, 2, 3]]], [ 0, 0, 1 ]      => 2        (arr[0][0][1])
  */
-function getElementByIndexes(/* arr, indexes */) {
-  throw new Error('Not implemented');
+function getElementByIndexes(arr, indexes) {
+  const newArr = arr.flat(3);
+  return newArr[indexes[indexes.length - 1]];
 }
 
 
@@ -648,8 +654,18 @@ function getElementByIndexes(/* arr, indexes */) {
  *   [ 1, 2, 3, 4, 5, 6, 7, 8 ]   =>  [ 5, 6, 7, 8, 1, 2, 3, 4 ]
  *
  */
-function swapHeadAndTail(/* arr */) {
-  throw new Error('Not implemented');
+function swapHeadAndTail(arr) {
+  if (arr.length === 1) return arr;
+  const isMiddle = arr.length % 2;
+  let middle;
+  if (isMiddle) middle = arr[Math.floor(arr.length / 2)];
+  const a = arr.slice(Math.floor(arr.length / 2) + 1);
+  const head = arr.slice(0, Math.floor(arr.length / 2));
+  const tail = middle ? a : arr.slice(Math.floor(arr.length / 2));
+  if (isMiddle) {
+    return [...tail, middle, ...head];
+  }
+  return [...tail, ...head];
 }
 
 
